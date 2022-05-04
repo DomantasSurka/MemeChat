@@ -9,7 +9,7 @@
     <li>Wait for about 5 - 10 minutes until new browser page opens up.</li>
     <li>Login and start chatting.</li>
 </ul>
-<h2>What the project does?</h2>
+<h2>What the project does? </h2>
 This is an app where people can only communicate with each other through memes.
 <h2>Why the project is useful?</h2>
 Sometimes you can tell excatly what you mean through memes and it can be faster to send one meme rather than a long message. So in a way it can help you speed up your conversation and let's you be more funny. Maybe you will discover new memes.
