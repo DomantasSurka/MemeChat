@@ -33,13 +33,12 @@ const Login = () =>{
     return(
         <div id="login-page">
             <div id="login-card">
-                <h1>Welcome to MemeChat!</h1>
+                <img src="https://media.discordapp.net/attachments/949751686824591471/955505978286157934/Screenshot_2022-03-21_at_18.38.36.png"/>
                 <div className='signin'>
                     <form action=''>
-                        <h1>Sign in</h1>
                         <input ref={emailref} type="email" placeholder='email'/>
                         <input ref={passwordref} type="password" placeholder='password'/>
-                        <button onClick={signin}>Sign in</button>
+                        <button onClick={signin}>Login</button>
                         <h6>Don't have an account? <span onClick={signup} className='signup-link'>Register</span></h6>
                     </form>
                 </div>
@@ -47,7 +46,7 @@ const Login = () =>{
                 onClick= {() => auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider())}
                 >
                 
-                <GoogleOutlined/> Sign in with Google
+                <GoogleOutlined/> Login with Google
                 </div>
             </div>
         </div>
