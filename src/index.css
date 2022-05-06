@@ -32,15 +32,25 @@
   flex-direction: column;
 }
 .signin>form>input{
-  border: 2px solid #e7e7e7;
-  border-radius: 5px;
-  padding: 5px;
+  border: 1px solid #e7e7e7;
+  padding: 10px;
   width: 80%;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 3px;
-  transition:0.5s;
+  margin-bottom: 0px;
+  transition: 0.2s;
+}
+
+input:first-child {
+  border-bottom: 1px solid #ffffff!important;
+}
+
+.signin>form>input:focus {
+  border: 1px solid black!important;
+  border-radius: 0px!important;
+  transition: 0.2s!important;
+  outline: none;
 }
 
 button {
@@ -49,18 +59,19 @@ button {
   margin-left: auto;
   margin-right: auto;
   background-color: #fff;
-  padding: 5px;
-  border-radius: 5px;
-  border: 2px solid #e7e7e7;
+  padding: 10px;
+  border-radius: 0px;
+  border: 1px solid #e7e7e7;
   text-transform: uppercase;
   font-weight: 500;
   color: #000000;
-  transition:0.5s;
+  transition:0.2s;
+  margin-top:10px;
 }
 
 button:hover {
-  border: 2px solid #000000;
-  cursor: grab;
+  border: 1px solid #000000;
+  cursor: pointer;
 }
 
 h6 {
@@ -69,6 +80,7 @@ h6 {
 
 .signup-link:hover{
   text-decoration:underline;
+  cursor:pointer;
 }
 
 .logo-tab {
@@ -118,7 +130,7 @@ h3 {
   width: 420px;
   text-align: center;
   background-color: #ffffff;
-  border-radius: 22px;
+  border-radius: 0px;
 }
 
 .login-button {
@@ -136,6 +148,16 @@ h3 {
 .google {
   background-color: #000000;
   color: white;
+  border-radius:0px;
+  border:1px solid #000000;
+  transition:0.2s;
+}
+
+.google:hover {
+  background-color: #ffffff;
+  color: black;
+  border-radius:0px;
+  border:1px solid #000000;
 }
 
 #loading-container {
