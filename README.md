@@ -5,8 +5,8 @@
     <li>Change your current directory to MemeChat <b>cd ./MemeChat</b>.</li>
     <li>Run <b>npm install</b> to intall all necessary libraries.</li>
     <li>Wait for about 10 - 15 minutes.</li>
-    <li>After install is finished run <b>npm start</b>.</li>
-    <li>Wait for about 5 - 10 minutes until new browser page opens up.</li>
+    <li>After install is finished run <b>npm run dev</b>.</li>
+    <li>Wait for about 1 minute. Open new browser tab and go to localhost:3000</li>
     <li>Login and start chatting.</li>
 </ul>
 <h2>What the project does? </h2>
