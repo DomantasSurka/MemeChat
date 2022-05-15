@@ -46,7 +46,7 @@ const SideBar: FC = () => {
         <div className="border-dark-lighten flex h-20 items-center justify-between border-b px-6">
           <Link to="/" className="flex items-center gap-1">
             <img className="h-8 w-8" src="/icon.svg" alt="" />
-            <h1 className="text-xl">FireVerse</h1>
+            <h1 className="text-xl">MEMECHAT</h1>
           </Link>
 
           <div className="flex items-center gap-1">

@@ -1,8 +1,9 @@
 import {
   AuthProvider,
-  FacebookAuthProvider,
   GoogleAuthProvider,
   signInWithPopup,
+  setPersistence,
+  browserSessionPersistence
 } from "firebase/auth";
 import { FC, useState } from "react";
 
@@ -11,6 +12,7 @@ import { Navigate } from "react-router-dom";
 import { auth } from "../shared/firebase";
 import { useQueryParams } from "../hooks/useQueryParams";
 import { useStore } from "../store";
+import { list } from "firebase/storage";
 
 const SignIn: FC = () => {
   const { redirect } = useQueryParams();
@@ -23,25 +25,47 @@ const SignIn: FC = () => {
 
   const handleSignIn = (provider: AuthProvider) => {
     setLoading(true);
-
-    signInWithPopup(auth, provider)
-      .then((res) => {
-        console.log(res.user);
-      })
-      .catch((err) => {
-        setIsAlertOpened(true);
-        setError(`Error: ${err.code}`);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setPersistence(auth, browserSessionPersistence).then(() => {
+      signInWithPopup(auth, provider)
+        .then((res) => {
+          console.log(res.user);
+        })
+        .catch((err) => {
+          setIsAlertOpened(true);
+          setError(`Error: ${err.code}`);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    });
   };
+
+  const getCustomStyle = () => {
+    const rnd = Math.random();
+    console.log(rnd);
+    if(rnd <= .4){
+      const lis = [
+        'https://c.tenor.com/mTkm08XB2YQAAAAC/rickroll-rick-astley.gif',
+        'https://c.tenor.com/eBltHZ96be4AAAAd/dans-opgeven.gif',
+        'https://c.tenor.com/yheo1GGu3FwAAAAd/rick-roll-rick-ashley.gif',
+        'https://c.tenor.com/NS_04C7q6ksAAAAM/p3.gif',
+        'https://c.tenor.com/u5lLmAvzkiYAAAAM/rick-astley-lol.gif'
+      ];
+      const lnk = lis[Math.floor(Math.random()*lis.length)];
+      return {
+        backgroundImage: `linear-gradient(rgba(36,37,38,0.5), rgba(36,37,38,0.5)), url('${lnk}')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }
+    } else return {}
+  }
 
   if (currentUser) return <Navigate to={redirect || "/"} />;
 
   return (
     <>
-      <div className="mx-[5vw] my-5 flex justify-center lg:my-10">
+      <div className="px-[5vw] py-5 flex justify-center lg:py-10" style={getCustomStyle()}>
         <div className="w-full max-w-[1100px]">
           <div className="flex justify-between">
             <div className="flex items-center gap-2">
@@ -68,9 +92,8 @@ const SignIn: FC = () => {
               <h1 className="text-center text-3xl md:text-left md:text-4xl">
                 The best place for messaging
               </h1>
-              <p className="text-center text-xl md:text-left md:text-2xl">
-                It's free, fast and secure. We make it easy and fun to stay
-                close to your favourite people.
+              <p className="text-center text-xl md:text-left md:text-2xl my-3">
+                Try out a new and fun way of chatting by only using gifs, emojis and images!
               </p>
 
               <button
@@ -81,16 +104,6 @@ const SignIn: FC = () => {
                 <img className="h-6 w-6" src="/google.svg" alt="" />
 
                 <span>Sign In With Google</span>
-              </button>
-
-              <button
-                disabled={loading}
-                onClick={() => handleSignIn(new FacebookAuthProvider())}
-                className="bg-primary flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-white transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"
-              >
-                <img className="h-6 w-6" src="/facebook.svg" alt="" />
-
-                <span>Sign In With Facebook</span>
               </button>
             </div>
           </div>
