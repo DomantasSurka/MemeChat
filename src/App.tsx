@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { auth, db } from "./shared/firebase";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -56,6 +56,7 @@ const App: FC = () => {
           </PrivateRoute>
         }
       />
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };

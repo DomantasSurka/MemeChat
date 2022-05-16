@@ -13,6 +13,8 @@ import { auth } from "../shared/firebase";
 import { useQueryParams } from "../hooks/useQueryParams";
 import { useStore } from "../store";
 import { list } from "firebase/storage";
+import '../styles/Custom.css';
+
 
 const SignIn: FC = () => {
   const { redirect } = useQueryParams();
@@ -23,7 +25,43 @@ const SignIn: FC = () => {
   const [error, setError] = useState("");
   const [isAlertOpened, setIsAlertOpened] = useState(false);
 
+  const [shake, setShake] = useState(false);
+  const [ccss, setCcss] = useState({ data: {}, x:0, y:0 });
+  const [meme, setMeme] = useState({wasSet: false, data: {}});
+
+  const getValueBetween = (a : number, b : number, px : number) => {
+    var sign = Math.random() >= .5 ? 1 : -1;
+    var num = Math.random() * 75 + 25
+    var x = num * sign + px;
+    if(x < a){
+      return a;
+    } else if(x > b){
+      return b;
+    }
+    return x;
+  }
+
   const handleSignIn = (provider: AuthProvider) => {
+    const chance = Math.random();
+    if(chance > 0.15){
+      // Button begins to shake
+      setShake(true);
+      const x = getValueBetween(-300, 300, ccss.x);
+      const y = getValueBetween(-200, 200, ccss.y);
+      setCcss(
+        {
+          data: {
+          position: "relative",
+          transform: `translate(${x}px, ${y}px)`,
+          transition: `all 0.15s ease-out`
+        },
+        x:x,
+        y:y
+      });
+      // Buttons stops to shake after 2 seconds
+      setTimeout(() => setShake(false), 2000);
+      return;
+    }
     setLoading(true);
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, provider)
@@ -41,15 +79,28 @@ const SignIn: FC = () => {
   };
 
   const getCustomStyle = () => {
+    if(meme.wasSet) return meme.data;
+    var dt = getCustomStyle2();
+    setMeme({wasSet: true, data: dt});
+    return dt;
+  }
+
+  const getCustomStyle2 = () => {
     const rnd = Math.random();
     console.log(rnd);
-    if(rnd <= .4){
+    if(rnd <= .5){
       const lis = [
         'https://c.tenor.com/mTkm08XB2YQAAAAC/rickroll-rick-astley.gif',
         'https://c.tenor.com/eBltHZ96be4AAAAd/dans-opgeven.gif',
         'https://c.tenor.com/yheo1GGu3FwAAAAd/rick-roll-rick-ashley.gif',
         'https://c.tenor.com/NS_04C7q6ksAAAAM/p3.gif',
-        'https://c.tenor.com/u5lLmAvzkiYAAAAM/rick-astley-lol.gif'
+        'https://c.tenor.com/u5lLmAvzkiYAAAAM/rick-astley-lol.gif',
+        'https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif',
+        'https://media.giphy.com/media/FWi1f9Wn2hubC/giphy.gif',
+        'https://media.giphy.com/media/5kq0GCjHA8Rwc/giphy.gif',
+        'https://media.giphy.com/media/pxy9QQUMF0glq/giphy.gif',
+        'https://media.giphy.com/media/7Ob5uwAwmTWLe/giphy.gif',
+        'https://media.giphy.com/media/FbPsiH5HTH1Di/giphy.gif'
       ];
       const lnk = lis[Math.floor(Math.random()*lis.length)];
       return {
@@ -95,16 +146,17 @@ const SignIn: FC = () => {
               <p className="text-center text-xl md:text-left md:text-2xl my-3">
                 Try out a new and fun way of chatting by only using gifs, emojis and images!
               </p>
+              <div style={ccss.data}>
+                <button
+                  disabled={loading}
+                  onClick={() => handleSignIn(new GoogleAuthProvider())}
+                  className={shake ? "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}
+                >
+                  <img className="h-6 w-6" src="/google.svg" alt="" />
 
-              <button
-                disabled={loading}
-                onClick={() => handleSignIn(new GoogleAuthProvider())}
-                className="flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"
-              >
-                <img className="h-6 w-6" src="/google.svg" alt="" />
-
-                <span>Sign In With Google</span>
-              </button>
+                  <span>Sign In With Google</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
