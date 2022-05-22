@@ -1,9 +1,13 @@
 import {
   AuthProvider,
   GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signInWithPopup,
   setPersistence,
-  browserSessionPersistence
+  browserSessionPersistence,
+  EmailAuthProvider,
+  getAuth
 } from "firebase/auth";
 import { FC, useState } from "react";
 
@@ -39,6 +43,21 @@ const SignIn: FC = () => {
       return b;
     }
     return x;
+  }
+
+  const handleSinInWithEmail = () => {
+    setPersistence(auth, browserSessionPersistence).then(() => {
+      signInWithEmailAndPassword(auth, "email123@gmail.com", "password123")
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+    });
   }
 
   const handleSignIn = (provider: AuthProvider) => {
@@ -155,6 +174,44 @@ const SignIn: FC = () => {
                   <img className="h-6 w-6" src="/google.svg" alt="" />
 
                   <span>Sign In With Google</span>
+                </button>
+              </div>
+              <div>
+                <button
+                  disabled={loading}
+                  onClick={handleSinInWithEmail}
+                  className={shake ? "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}
+                >
+                  <img className="h-6 w-6" src="/google.svg" alt="" />
+
+                  <span>Sign In With Email and Passoword</span>
+                </button>
+              </div>
+              <div>
+                <button
+                  disabled={loading}
+                  onClick={() => {
+                    setPersistence(auth, browserSessionPersistence).then(() => {
+                      createUserWithEmailAndPassword(auth, "email123@gmail.com", "password123")
+                      .then((userCredential) => {
+                        // Signed in 
+                        const user = userCredential.user;
+                        // ...
+                      })
+                      .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        console.log(errorCode);
+                        console.log(errorMessage);
+                        // ..
+                      });
+                    });
+                  }}
+                  className={shake ? "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}
+                >
+                  <img className="h-6 w-6" src="/google.svg" alt="" />
+                
+                  <span>Regsiter With Email and Passoword</span>
                 </button>
               </div>
             </div>
