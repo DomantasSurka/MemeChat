@@ -66,6 +66,7 @@ const SignIn: FC = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          
           // ...
         })
         .catch((error) => {
@@ -78,26 +79,26 @@ const SignIn: FC = () => {
   }
 
   const handleSignIn = (provider: AuthProvider) => {
-    const chance = Math.random();
-    if(chance > 0.15){
-      // Button begins to shake
-      setShake(true);
-      const x = getValueBetween(-300, 300, ccss.x);
-      const y = getValueBetween(-200, 200, ccss.y);
-      setCcss(
-        {
-          data: {
-          position: "relative",
-          transform: `translate(${x}px, ${y}px)`,
-          transition: `all 0.15s ease-out`
-        },
-        x:x,
-        y:y
-      });
-      // Buttons stops to shake after 2 seconds
-      setTimeout(() => setShake(false), 2000);
-      return;
-    }
+    // const chance = Math.random();
+    // if(chance > 0.15){
+    //   // Button begins to shake
+    //   setShake(true);
+    //   const x = getValueBetween(-300, 300, ccss.x);
+    //   const y = getValueBetween(-200, 200, ccss.y);
+    //   setCcss(
+    //     {
+    //       data: {
+    //       position: "relative",
+    //       transform: `translate(${x}px, ${y}px)`,
+    //       transition: `all 0.15s ease-out`
+    //     },
+    //     x:x,
+    //     y:y
+    //   });
+    //   // Buttons stops to shake after 2 seconds
+    //   setTimeout(() => setShake(false), 2000);
+    //   return;
+    // }
     setLoading(true);
     setPersistence(auth, browserSessionPersistence).then(() => {
       signInWithPopup(auth, provider)
@@ -209,7 +210,8 @@ const SignIn: FC = () => {
                 <button
                     disabled={loading}
                     onClick={() => handleSignIn(new GoogleAuthProvider())}
-                    className={shake ? "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
+                    //shake ? "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : 
+                    className={"google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
                   <img className="h-6 w-6" src="/google.svg" alt="" />
                   <span>Login with Google</span>
                 </button>
