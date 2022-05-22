@@ -1,10 +1,5 @@
 export const DEFAULT_AVATAR = "/default-avatar.png";
-export const IMAGE_PROXY = (url: string) => {
-  if(url == null || url == `https://example.com/jane-q-user/profile.jpg`){
-    return "/default-avatar.png";
-  }
-  return `https://apoqrsgtqq.cloudimg.io/${url}`;
-}
+export const IMAGE_PROXY = (url: string) => url == null ?  '/default-avatar.png' : `https://apoqrsgtqq.cloudimg.io/${url}`;
 
 export const STICKERS_URL =
   "https://cdn.jsdelivr.net/gh/naptestdev/zalo-stickers/data/favourite.json";
