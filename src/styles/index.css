@@ -7,6 +7,54 @@ body {
   --primary-color: #0d90f3;
 }
 
+input.input {
+  background-color: transparent;
+  border: 1px solid #fff;
+  padding: 2px;
+  padding-left: 5px;
+}
+
+button.btn.login-btn, button.btn.register-btn {
+  border: 1px solid #fff;
+  padding: 5px;
+  margin-right: 0px;
+  margin-top: 15px;
+  width: 49%;
+  transition:0.1s;
+}
+
+button.btn.login-btn{
+  border-right:0px;
+}
+
+button.btn.login-btn:hover, button.btn.register-btn:hover, button.google-btn:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+button.google-btn {
+  border: 1px solid #ffffff;
+  color: #fff;
+  border-radius: 0px;
+  padding: 5px;
+  margin-top: 10px;
+  min-width: 97%;
+  margin-left: auto;
+  margin-right: auto;
+  transition:0.1s;
+}
+
+.center{
+  text-align:center;
+  display:block;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+input.input.input-first {
+  border-bottom: 0px;
+}
+
 input[type="checkbox"] {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
   @apply appearance-none outline-none w-4 h-4 rounded bg-white transition-all duration-300 checked:bg-primary;
