@@ -449,7 +449,6 @@ const InputSection: FC<InputSectionProps> = ({
               className="bg-dark-lighten h-9 w-full rounded-full pl-3 pr-10 outline-none"
               type="text"
               placeholder="Message..."
-              readOnly
             />
             <button
               type="button"

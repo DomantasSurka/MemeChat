@@ -76,7 +76,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({ conversation }) => {
               {conversation.users.length > 2 && conversation?.group?.groupName
                 ? conversation.group.groupName
                 : filtered
-                    ?.map((user) => user.data()?.displayName)
+                    ?.map((user) => user.data()?.displayName == null ? "Anonimas" : user.data()?.displayName)
                     .slice(0, 3)
                     .join(", ")}
             </p>

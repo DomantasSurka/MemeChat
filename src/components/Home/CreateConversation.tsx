@@ -143,7 +143,7 @@ const CreateConversation: FC<CreateConversationProps> = ({ setIsOpened }) => {
                       src={IMAGE_PROXY(doc.data().photoURL)}
                       alt=""
                     />
-                    <p>{doc.data().displayName}</p>
+                    <p>{doc.data().displayName == null ? "Anonimas" : doc.data().displayName}</p>
                   </div>
                 ))}
             </div>

@@ -56,7 +56,7 @@ const SelectConversation: FC<SelectConversationProps> = ({
         />
         <div className="flex flex-grow flex-col items-start gap-1 py-1">
           <p className="max-w-[240px] flex-grow overflow-hidden text-ellipsis whitespace-nowrap">
-            {filtered?.[0].data()?.displayName}
+            {filtered?.[0].data()?.displayName == null ? "Anonimas" : filtered?.[0].data()?.displayName}
           </p>
           {lastMessageLoading ? (
             <Skeleton className="w-2/3 flex-grow" />
@@ -111,7 +111,7 @@ const SelectConversation: FC<SelectConversationProps> = ({
         <p className="max-w-[240px] overflow-hidden text-ellipsis whitespace-nowrap">
           {conversation?.group?.groupName ||
             filtered
-              ?.map((user) => user.data()?.displayName)
+              ?.map((user) => user.data()?.displayName == null ? "Anonimas" : user.data()?.displayName)
               .slice(0, 3)
               .join(", ")}
         </p>
