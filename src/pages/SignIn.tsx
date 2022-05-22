@@ -69,11 +69,29 @@ const SignIn: FC = () => {
 
   const handleSingUpWithEmail = () => {
     setPersistence(auth, browserSessionPersistence).then(() => {
-    createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          handleChangeName();
+          // onAuthStateChanged(auth, (user) => {
+          //   if(user){
+          //     updateProfile(user, {
+          //       displayName: "Anonymous", photoURL: null
+          //     }).then(() => {
+          //       // Profile updated!
+          //       console.log("profile updated !!!");
+          //       // ...
+          //     }).catch((error) => {
+          //       // An error occurred
+          //       console.log(error);
+          //       // ...
+          //     });
+          //   }
+          // });
+          handleChangeName(user);
+          user.reload().then(() => {
+            handleChangeName(user);
+          });
           // ...
         })
         .catch((error) => {
@@ -84,13 +102,18 @@ const SignIn: FC = () => {
           setErrorForm(errorCode);
           // ..
         });
-  });}
+  });
+}
 
-  const handleChangeName = () => {
-    updateProfile(auth.currentUser as User, {
-      displayName: "Anonimas"
+  const handleChangeName = (user : User) => {
+    updateProfile(user, {
+      displayName: "Anonimas",
+      photoURL: null
     }).then(() => {
+      console.log("username changed");
+      console.log(user);
     }).catch((error) => {
+      console.log(error);
     });
   }
 
@@ -216,10 +239,10 @@ const SignIn: FC = () => {
                 <input onChange={handlePassword} className="input"
                        value={password} type="password" placeholder="Password"/><br/>
                 <div className="center">
-                <button onClick={handleSignInWithEmail} className="btn login-btn" type="submit">
+                <button onClick={handleSignInWithEmail} className="btn login-btn">
                   Login
                 </button>
-                <button onClick={handleSingUpWithEmail} className="btn register-btn" type="submit">
+                <button onClick={handleSingUpWithEmail} className="btn register-btn">
                   Register
                 </button>
                   <p className="error">{errorForm}</p>
@@ -227,7 +250,7 @@ const SignIn: FC = () => {
                 <button
                     disabled={loading}
                     onClick={() => handleSignIn(new GoogleAuthProvider())}
-                    className={shake ? "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
+                    className={"google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
                   <img className="h-6 w-6" src="/google.svg" alt="" />
                   <span>Login with Google</span>
                 </button>

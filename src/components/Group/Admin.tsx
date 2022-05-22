@@ -50,7 +50,7 @@ const Admin: FC<AdminProps> = ({ conversation }) => {
             />
 
             <div className="flex-grow">
-              <h1>{user.displayName}</h1>
+              <h1>{user.displayName == null ? "Anonimas" : user.displayName}</h1>
             </div>
 
             {conversation.group?.admins?.includes(currentUser?.uid as string) &&

@@ -105,6 +105,7 @@ const ReactionStatus: FC<ReactionStatusProps> = ({ message, position }) => {
                         <p>
                           {
                             usersInfo?.find((user) => user.id === key)?.data()
+                              ?.displayName == null ? "Anonimas" : usersInfo?.find((user) => user.id === key)?.data()
                               ?.displayName
                           }
                         </p>

@@ -22,7 +22,7 @@ const App: FC = () => {
         setDoc(doc(db, "users", user.uid), {
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName,
+          displayName: user.displayName == null ? "Anonimas" : user.displayName,
           photoURL: user.photoURL,
           phoneNumber: user.phoneNumber || user.providerData?.[0]?.phoneNumber,
         });

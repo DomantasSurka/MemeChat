@@ -31,7 +31,7 @@ const AvatarFromId: FC<AvatarFromIdProps> = ({ uid, size = 30 }) => {
 
   return (
     <img
-      title={data?.[0].data()?.displayName}
+      title={data?.[0].data()?.displayName == null ? "Anonimas" : data?.[0].data()?.displayName}
       style={{ width: size, height: size }}
       className="rounded-full object-cover"
       src={IMAGE_PROXY(data?.[0].data()?.photoURL)}
