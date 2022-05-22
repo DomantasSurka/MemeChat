@@ -1,6 +1,7 @@
-import { FC } from "react";
+import {FC, useState} from "react";
 import { IMAGE_PROXY } from "../../shared/constants";
 import { useStore } from "../../store";
+import {getAuth, updateProfile, deleteUser, User} from "firebase/auth";
 
 interface UserInfoProps {
   isOpened: boolean;
@@ -9,6 +10,31 @@ interface UserInfoProps {
 
 const UserInfo: FC<UserInfoProps> = ({ isOpened, setIsOpened }) => {
   const currentUser = useStore((state) => state.currentUser);
+
+  const [name, setName] = useState('');
+
+  const handleName = (e: React.FormEvent<HTMLInputElement>) => {
+    setName(e.currentTarget.value);
+  }
+
+  const auth = getAuth();
+  const handleChangeName = () => {
+    updateProfile(auth.currentUser as User, {
+      displayName: name
+    }).then(() => {
+      window.location.reload()
+      // Profile updated!
+      // ...
+    }).catch((error) => {
+      // An error occurred
+      // ...
+    });
+  }
+  const handleDelete = () => {
+    deleteUser(auth.currentUser as User).then(() => {
+    }).catch((error) => {
+    });
+  }
 
   return (
     <div
@@ -52,9 +78,21 @@ const UserInfo: FC<UserInfoProps> = ({ isOpened, setIsOpened }) => {
             </div>
           </div>
 
-          <p className="mt-4 text-gray-400">
-            Change your google / facebook avatar or username to update it here
-          </p>
+          <div className="change-name">
+          <label >Change your name here:</label>
+          <input onChange={handleName} className="input" value={name} type="text" placeholder={currentUser?.displayName || ""}/>
+          <button onClick={handleChangeName} className="btn name-btn" type="submit">
+            Change
+          </button>
+          </div>
+
+          <div className="change-name">
+            <label>Wanna delete your profile?</label><br/>
+            <button onClick={handleDelete} className="btn delete-btn" type="submit">
+              Delete
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
