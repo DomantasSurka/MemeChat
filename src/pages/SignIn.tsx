@@ -7,7 +7,10 @@ import {
   setPersistence,
   browserSessionPersistence,
   EmailAuthProvider,
-  getAuth
+  getAuth,
+  updateProfile,
+  User,
+  onAuthStateChanged
 } from "firebase/auth";
 import { FC, useState } from "react";
 
@@ -35,6 +38,7 @@ const SignIn: FC = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorForm, setErrorForm] = useState('');
 
   const getValueBetween = (a : number, b : number, px : number) => {
     var sign = Math.random() >= .5 ? 1 : -1;
@@ -49,24 +53,27 @@ const SignIn: FC = () => {
   }
 
   const handleSignInWithEmail = () => {
-    signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
-  }
+    setPersistence(auth, browserSessionPersistence).then(() => {
+      signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            // ...
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorForm(errorCode);
+          });
+    });}
 
   const handleSingUpWithEmail = () => {
+    setPersistence(auth, browserSessionPersistence).then(() => {
     createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          
+          handleChangeName();
           // ...
         })
         .catch((error) => {
@@ -74,8 +81,17 @@ const SignIn: FC = () => {
           const errorMessage = error.message;
           console.log(errorCode);
           console.log(errorMessage);
+          setErrorForm(errorCode);
           // ..
         });
+  });}
+
+  const handleChangeName = () => {
+    updateProfile(auth.currentUser as User, {
+      displayName: "Anonimas"
+    }).then(() => {
+    }).catch((error) => {
+    });
   }
 
   const handleSignIn = (provider: AuthProvider) => {
@@ -161,7 +177,7 @@ const SignIn: FC = () => {
 
   return (
     <>
-      <div className="px-[5vw] py-5 flex justify-center lg:py-10" style={getCustomStyle()}>
+      <div className="div-max px-[5vw] py-5 flex justify-center lg:py-10" style={getCustomStyle()}>
         <div className="w-full max-w-[1100px]">
           <div className="flex justify-between">
             <div className="flex items-center gap-2">
@@ -206,12 +222,12 @@ const SignIn: FC = () => {
                 <button onClick={handleSingUpWithEmail} className="btn register-btn" type="submit">
                   Register
                 </button>
+                  <p className="error">{errorForm}</p>
                 </div>
                 <button
                     disabled={loading}
                     onClick={() => handleSignIn(new GoogleAuthProvider())}
-                    //shake ? "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : 
-                    className={"google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
+                    className={shake ? "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
                   <img className="h-6 w-6" src="/google.svg" alt="" />
                   <span>Login with Google</span>
                 </button>
