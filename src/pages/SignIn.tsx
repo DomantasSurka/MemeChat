@@ -33,6 +33,9 @@ const SignIn: FC = () => {
   const [ccss, setCcss] = useState({ data: {}, x:0, y:0 });
   const [meme, setMeme] = useState({wasSet: false, data: {}});
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const getValueBetween = (a : number, b : number, px : number) => {
     var sign = Math.random() >= .5 ? 1 : -1;
     var num = Math.random() * 75 + 25
@@ -45,19 +48,33 @@ const SignIn: FC = () => {
     return x;
   }
 
-  const handleSinInWithEmail = () => {
-    setPersistence(auth, browserSessionPersistence).then(() => {
-      signInWithEmailAndPassword(auth, "email123@gmail.com", "password123")
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+  const handleSignInWithEmail = () => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
     });
+  }
+
+  const handleSingUpWithEmail = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+          // ..
+        });
   }
 
   const handleSignIn = (provider: AuthProvider) => {
@@ -96,6 +113,14 @@ const SignIn: FC = () => {
         });
     });
   };
+
+  const handleEmail = (e: React.FormEvent<HTMLInputElement>) => {
+    setEmail(e.currentTarget.value);
+  }
+
+  const handlePassword = (e: React.FormEvent<HTMLInputElement>) => {
+    setPassword(e.currentTarget.value);
+  }
 
   const getCustomStyle = () => {
     if(meme.wasSet) return meme.data;
@@ -165,53 +190,28 @@ const SignIn: FC = () => {
               <p className="text-center text-xl md:text-left md:text-2xl my-3">
                 Try out a new and fun way of chatting by only using gifs, emojis and images!
               </p>
-              <div style={ccss.data}>
-                <button
-                  disabled={loading}
-                  onClick={() => handleSignIn(new GoogleAuthProvider())}
-                  className={shake ? "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}
-                >
-                  <img className="h-6 w-6" src="/google.svg" alt="" />
-
-                  <span>Sign In With Google</span>
-                </button>
-              </div>
               <div>
-                <button
-                  disabled={loading}
-                  onClick={handleSinInWithEmail}
-                  className={shake ? "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}
-                >
-                  <img className="h-6 w-6" src="/google.svg" alt="" />
+                <h1 className="text-center text-xl md:text-left md:text-2xl my-3">LOGIN / REGISTER</h1>
+                {/* Labels and inputs for form data */}
+                <input onChange={handleEmail} className="input input-first"
+                       value={email} type="email" placeholder="Email"/><br/>
 
-                  <span>Sign In With Email and Passoword</span>
+                <input onChange={handlePassword} className="input"
+                       value={password} type="password" placeholder="Password"/><br/>
+                <div className="center">
+                <button onClick={handleSignInWithEmail} className="btn login-btn" type="submit">
+                  Login
                 </button>
-              </div>
-              <div>
+                <button onClick={handleSingUpWithEmail} className="btn register-btn" type="submit">
+                  Register
+                </button>
+                </div>
                 <button
-                  disabled={loading}
-                  onClick={() => {
-                    setPersistence(auth, browserSessionPersistence).then(() => {
-                      createUserWithEmailAndPassword(auth, "email123@gmail.com", "password123")
-                      .then((userCredential) => {
-                        // Signed in 
-                        const user = userCredential.user;
-                        // ...
-                      })
-                      .catch((error) => {
-                        const errorCode = error.code;
-                        const errorMessage = error.message;
-                        console.log(errorCode);
-                        console.log(errorMessage);
-                        // ..
-                      });
-                    });
-                  }}
-                  className={shake ? "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md bg-white p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}
-                >
+                    disabled={loading}
+                    onClick={() => handleSignIn(new GoogleAuthProvider())}
+                    className={shake ? "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75 shake" : "google-btn flex min-w-[250px] cursor-pointer items-center gap-3 rounded-md p-3 text-black transition duration-300 hover:brightness-90 disabled:!cursor-default disabled:!brightness-75"}>
                   <img className="h-6 w-6" src="/google.svg" alt="" />
-                
-                  <span>Regsiter With Email and Passoword</span>
+                  <span>Login with Google</span>
                 </button>
               </div>
             </div>
